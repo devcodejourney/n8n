@@ -1,10 +1,12 @@
 <script setup lang="ts">
-import { computed } from 'vue';
-import { N8nButton, N8nIcon, N8nText } from '@n8n/design-system';
+import { N8nActionDropdown, N8nButton, N8nIcon, N8nText } from '@n8n/design-system';
+import type { ActionDropdownItem } from '@n8n/design-system';
 import { useI18n } from '@n8n/i18n';
-import PrivateCredentialIcon from '@/features/resolvers/components/PrivateCredentialIcon.vue';
+import { computed } from 'vue';
+import CredentialIcon from './CredentialIcon.vue';
 
 interface Props {
+	credentialTypeName: string;
 	credentialName: string;
 	isConnected: boolean;
 	canModify: boolean;
@@ -20,40 +22,72 @@ const emit = defineEmits<{
 
 const i18n = useI18n();
 
-const connectLabel = computed(() => i18n.baseText('credentials.private.row.connect'));
+const connectedActions = computed<Array<ActionDropdownItem>>(() => [
+	{
+		id: 'modify',
+		label: i18n.baseText('credentials.private.row.modify'),
+	},
+	{
+		id: 'disconnect',
+		label: i18n.baseText('credentials.private.row.disconnect'),
+	},
+]);
+
+function onActionSelect(action: string) {
+	if (action === 'modify') emit('modify');
+	else if (action === 'disconnect') emit('disconnect');
+}
 </script>
 
 <template>
 	<div :class="$style.row">
 		<div :class="$style.left">
-			<N8nText size="small">{{ credentialName }}</N8nText>
-			<PrivateCredentialIcon :tooltip="false" />
+			<CredentialIcon :credential-type-name="credentialTypeName" :size="20" />
+			<div :class="$style.info">
+				<N8nText size="small">{{ credentialName }}</N8nText>
+				<div :class="$style.status">
+					<template v-if="isConnected">
+						<span :class="$style.dot" />
+						<N8nText size="xsmall" color="text-light">
+							{{ i18n.baseText('credentials.private.row.connectedStatus') }}
+						</N8nText>
+					</template>
+					<template v-else>
+						<N8nIcon icon="chevron-right" :size="12" color="text-light" />
+						<N8nText size="xsmall" color="text-light">
+							{{ i18n.baseText('credentials.private.row.notConnected') }}
+						</N8nText>
+					</template>
+				</div>
+			</div>
 		</div>
+
 		<div :class="$style.right">
-			<template v-if="isConnected">
-				<N8nIcon icon="circle-check" color="success" size="small" />
-				<N8nText size="small" color="success">
-					{{ i18n.baseText('credentials.private.row.connected') }}
-				</N8nText>
-				<template v-if="canModify">
-					<button :class="$style.textLink" @click="emit('modify')">
-						{{ i18n.baseText('credentials.private.row.modify') }}
-					</button>
-					<button :class="$style.textLink" @click="emit('disconnect')">
-						{{ i18n.baseText('credentials.private.row.disconnect') }}
-					</button>
+			<N8nButton
+				v-if="!isConnected && canModify"
+				size="small"
+				type="secondary"
+				:label="i18n.baseText('credentials.private.row.connect')"
+				data-test-id="node-credential-private-connect"
+				@click="emit('connect')"
+			/>
+			<N8nActionDropdown
+				v-else-if="isConnected && canModify"
+				:items="connectedActions"
+				placement="bottom-end"
+				data-test-id="node-credential-private-connected-actions"
+				@select="onActionSelect"
+			>
+				<template #activator>
+					<N8nButton
+						size="small"
+						type="secondary"
+						:label="i18n.baseText('credentials.private.row.connected')"
+						icon="chevron-down"
+						icon-orientation="right"
+					/>
 				</template>
-			</template>
-			<template v-else>
-				<N8nButton
-					v-if="canModify"
-					size="small"
-					type="secondary"
-					:label="connectLabel"
-					data-test-id="node-credential-private-connect"
-					@click="emit('connect')"
-				/>
-			</template>
+			</N8nActionDropdown>
 		</div>
 	</div>
 </template>
@@ -70,31 +104,32 @@ const connectLabel = computed(() => i18n.baseText('credentials.private.row.conne
 .left {
 	display: flex;
 	align-items: center;
-	gap: var(--spacing--3xs);
+	gap: var(--spacing--xs);
 	min-width: 0;
+	flex: 1;
+}
 
-	> :first-child {
-		overflow: hidden;
-		text-overflow: ellipsis;
-		white-space: nowrap;
-	}
+.info {
+	display: flex;
+	flex-direction: column;
+	min-width: 0;
+}
+
+.status {
+	display: flex;
+	align-items: center;
+	gap: var(--spacing--5xs);
+}
+
+.dot {
+	flex-shrink: 0;
+	width: 8px;
+	height: 8px;
+	border-radius: 50%;
+	background-color: var(--color-success);
 }
 
 .right {
-	display: flex;
-	align-items: center;
-	gap: var(--spacing--2xs);
 	flex-shrink: 0;
-}
-
-.textLink {
-	all: unset;
-	cursor: pointer;
-	color: var(--color-primary);
-	font-size: var(--font-size-2xs);
-
-	&:hover {
-		text-decoration: underline;
-	}
 }
 </style>

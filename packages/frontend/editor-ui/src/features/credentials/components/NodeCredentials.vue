@@ -983,6 +983,7 @@ async function onQuickConnectSignIn(credentialTypeName: string) {
 				</div>
 				<CredentialPrivateConnectionRow
 					v-if="getSelectedPrivateCredential(type.name) && isDefaultResolver"
+					:credential-type-name="type.name"
 					:credential-name="getSelectedPrivateCredential(type.name)!.name"
 					:is-connected="isPrivateConnected(type.name)"
 					:can-modify="canConnectPrivateCredential(type.name)"
