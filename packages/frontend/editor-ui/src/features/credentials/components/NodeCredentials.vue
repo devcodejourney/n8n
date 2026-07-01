@@ -50,7 +50,6 @@ import { useAiGateway } from '@/app/composables/useAiGateway';
 import AiGatewaySelector from '@/app/components/AiGatewaySelector.vue';
 
 import {
-	N8nBadge,
 	N8nButton,
 	N8nIcon,
 	N8nInput,
@@ -910,16 +909,11 @@ async function onQuickConnectSignIn(credentialTypeName: string) {
 											<template #content>{{
 												i18n.baseText('credentials.private.tooltip')
 											}}</template>
-											<N8nBadge
-												theme="tertiary"
-												class="pl-3xs pr-3xs"
+											<N8nIcon
+												icon="user-round-key"
+												size="small"
 												data-test-id="credential-option-private-badge"
-											>
-												<span :class="$style.dynamicBadgeText">
-													<N8nIcon icon="key-round" size="small" />
-													{{ i18n.baseText('credentials.private.badge') }}
-												</span>
-											</N8nBadge>
+											/>
 										</N8nTooltip>
 									</div>
 									<N8nText size="small">{{ item.typeDisplayName }}</N8nText>
@@ -942,16 +936,11 @@ async function onQuickConnectSignIn(credentialTypeName: string) {
 						<div v-if="isCredentialResolvable(type.name)" :class="$style.dynamicIndicator">
 							<N8nTooltip placement="top">
 								<template #content>{{ i18n.baseText('credentials.private.tooltip') }}</template>
-								<N8nBadge
-									theme="tertiary"
-									class="pl-3xs pr-3xs"
+								<N8nIcon
+									icon="user-round-key"
+									size="small"
 									data-test-id="node-credential-private-icon"
-								>
-									<span :class="$style.dynamicBadgeText">
-										<N8nIcon icon="key-round" size="small" />
-										{{ i18n.baseText('credentials.private.badge') }}
-									</span>
-								</N8nBadge>
+								/>
 							</N8nTooltip>
 						</div>
 					</div>
@@ -1084,15 +1073,6 @@ async function onQuickConnectSignIn(credentialTypeName: string) {
 	top: 50%;
 	transform: translateY(-50%);
 	z-index: 1;
-}
-
-.dynamicBadgeText {
-	display: inline-flex;
-	align-items: center;
-	gap: var(--spacing--4xs);
-	font-size: var(--font-size--2xs);
-	line-height: 1;
-	vertical-align: middle;
 }
 
 .newCredential {
