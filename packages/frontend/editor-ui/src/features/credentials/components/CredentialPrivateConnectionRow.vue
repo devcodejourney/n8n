@@ -66,7 +66,7 @@ function onActionSelect(action: string) {
 			<N8nButton
 				v-if="!isConnected && canModify"
 				size="small"
-				type="secondary"
+				variant="outline"
 				:label="i18n.baseText('credentials.private.row.connect')"
 				data-test-id="node-credential-private-connect"
 				@click="emit('connect')"
@@ -81,7 +81,7 @@ function onActionSelect(action: string) {
 				<template #activator>
 					<N8nButton
 						size="small"
-						type="secondary"
+						variant="outline"
 						:label="i18n.baseText('credentials.private.row.connected')"
 						icon="chevron-down"
 						icon-orientation="right"
@@ -126,7 +126,7 @@ function onActionSelect(action: string) {
 	width: 8px;
 	height: 8px;
 	border-radius: 50%;
-	background-color: var(--color-success);
+	background-color: var(--color--success);
 }
 
 .dotDisconnected {
@@ -134,7 +134,7 @@ function onActionSelect(action: string) {
 	width: 8px;
 	height: 8px;
 	border-radius: 50%;
-	background-color: var(--color-danger);
+	background-color: var(--color--danger);
 }
 
 .right {
