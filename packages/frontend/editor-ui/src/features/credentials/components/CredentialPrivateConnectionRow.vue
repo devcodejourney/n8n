@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { N8nActionDropdown, N8nButton, N8nIcon, N8nText } from '@n8n/design-system';
+import { N8nActionDropdown, N8nButton, N8nText } from '@n8n/design-system';
 import type { ActionDropdownItem } from '@n8n/design-system';
 import { useI18n } from '@n8n/i18n';
 import { computed } from 'vue';
@@ -22,7 +22,7 @@ const emit = defineEmits<{
 
 const i18n = useI18n();
 
-const connectedActions = computed<Array<ActionDropdownItem>>(() => [
+const connectedActions = computed<Array<ActionDropdownItem<string>>>(() => [
 	{
 		id: 'modify',
 		label: i18n.baseText('credentials.private.row.modify'),
@@ -53,7 +53,7 @@ function onActionSelect(action: string) {
 						</N8nText>
 					</template>
 					<template v-else>
-						<N8nIcon icon="chevron-right" :size="12" color="text-light" />
+						<span :class="$style.dotDisconnected" />
 						<N8nText size="xsmall" color="text-light">
 							{{ i18n.baseText('credentials.private.row.notConnected') }}
 						</N8nText>
@@ -127,6 +127,14 @@ function onActionSelect(action: string) {
 	height: 8px;
 	border-radius: 50%;
 	background-color: var(--color-success);
+}
+
+.dotDisconnected {
+	flex-shrink: 0;
+	width: 8px;
+	height: 8px;
+	border-radius: 50%;
+	background-color: var(--color-danger);
 }
 
 .right {

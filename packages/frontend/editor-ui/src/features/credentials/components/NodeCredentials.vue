@@ -213,7 +213,7 @@ async function onDisconnectFromRow(credentialType: string): Promise<void> {
 	if (!credential) return;
 
 	const { confirmDisconnect } = useDisconnectConfirmation();
-	const confirmed = await confirmDisconnect();
+	const confirmed = await confirmDisconnect(credential.name);
 	if (!confirmed) return;
 
 	try {

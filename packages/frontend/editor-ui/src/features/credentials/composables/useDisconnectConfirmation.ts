@@ -8,7 +8,7 @@ export function useDisconnectConfirmation() {
 	const message = useMessage();
 	const i18n = useI18n();
 
-	async function confirmDisconnect(): Promise<boolean> {
+	async function confirmDisconnect(credentialName?: string): Promise<boolean> {
 		if (localStorage.getItem(LOCAL_STORAGE_SKIP_DISCONNECT_CONFIRM) === 'true') {
 			return true;
 		}
@@ -17,7 +17,9 @@ export function useDisconnectConfirmation() {
 
 		const content = h('div', [
 			h('div', { class: 'el-message-box__message__structured' }, [
-				i18n.baseText('credentials.private.disconnect.dialog.message'),
+				i18n.baseText('credentials.private.disconnect.dialog.message', {
+					interpolate: { credentialName: credentialName ?? '' },
+				}),
 			]),
 			h(
 				N8nCheckbox,
