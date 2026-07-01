@@ -44,16 +44,22 @@ function onActionSelect(action: string) {
 		<div :class="$style.left">
 			<CredentialIcon :credential-type-name="credentialTypeName" :size="20" />
 			<div :class="$style.info">
-				<N8nText size="small">{{ credentialName }}</N8nText>
+				<span :class="$style.credentialName">
+					<N8nText size="small">{{ credentialName }}</N8nText>
+				</span>
 				<div :class="$style.status">
 					<template v-if="isConnected">
-						<span :class="$style.dot" />
+						<span :class="$style.dotWrapper">
+							<span :class="$style.dot" />
+						</span>
 						<N8nText size="xsmall" color="text-light">
 							{{ i18n.baseText('credentials.private.row.connectedStatus') }}
 						</N8nText>
 					</template>
 					<template v-else>
-						<span :class="$style.dotDisconnected" />
+						<span :class="$style.dotWrapper">
+							<span :class="$style.dotDisconnected" />
+						</span>
 						<N8nText size="xsmall" color="text-light">
 							{{ i18n.baseText('credentials.private.row.notConnected') }}
 						</N8nText>
@@ -98,7 +104,7 @@ function onActionSelect(action: string) {
 	align-items: center;
 	justify-content: space-between;
 	gap: var(--spacing--xs);
-	padding: var(--spacing--3xs) 0;
+	padding: var(--spacing--3xs) var(--spacing--xs);
 }
 
 .left {
@@ -106,7 +112,10 @@ function onActionSelect(action: string) {
 	align-items: center;
 	gap: var(--spacing--xs);
 	min-width: 0;
+	min-height: 32px;
 	flex: 1;
+	padding: var(--spacing--4xs);
+	border-radius: var(--border-radius-base);
 }
 
 .info {
@@ -115,24 +124,35 @@ function onActionSelect(action: string) {
 	min-width: 0;
 }
 
+.credentialName {
+	margin-bottom: -2px;
+}
+
 .status {
 	display: flex;
 	align-items: center;
 	gap: var(--spacing--5xs);
 }
 
-.dot {
+.dotWrapper {
 	flex-shrink: 0;
-	width: 8px;
-	height: 8px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	width: 14px;
+	height: 14px;
+}
+
+.dot {
+	width: 6px;
+	height: 6px;
 	border-radius: 50%;
 	background-color: var(--color--success);
 }
 
 .dotDisconnected {
-	flex-shrink: 0;
-	width: 8px;
-	height: 8px;
+	width: 6px;
+	height: 6px;
 	border-radius: 50%;
 	background-color: var(--color--danger);
 }
