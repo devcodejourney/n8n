@@ -18,7 +18,7 @@ import { N8nResizeWrapper } from '@n8n/design-system';
 import FocusSidebarTabs from '@/features/setupPanel/components/FocusSidebarTabs.vue';
 import SetupPanel from '@/features/setupPanel/components/SetupPanel.vue';
 import FocusPanel from '@/app/components/FocusPanel.vue';
-import EvaluationsWizardSidepanel from '@/features/ai/evaluation.ee/components/WizardSidepanel/EvaluationsWizardSidepanel.vue';
+import TestsPanel from '@/features/ai/evaluation.ee/components/Tests/TestsPanel.vue';
 import EvaluationsPaywall from '@/features/ai/evaluation.ee/components/Paywall/EvaluationsPaywall.vue';
 import { useEvaluationsWizardSidepanelExperiment } from '@/experiments/evaluationsWizardSidepanel/useEvaluationsWizardSidepanelExperiment';
 import { useAiRootNodes } from '@/features/ai/evaluation.ee/composables/useAiRootNodes';
@@ -198,7 +198,7 @@ onBeforeUnmount(() => {
 					<SetupPanel />
 				</div>
 				<div v-else-if="showEvaluationsPanel" :class="$style['setup-panel-wrapper']">
-					<EvaluationsWizardSidepanel />
+					<TestsPanel />
 				</div>
 				<div v-else-if="showEvaluationsPaywall" :class="$style['setup-panel-wrapper']">
 					<EvaluationsPaywall />
